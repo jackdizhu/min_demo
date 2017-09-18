@@ -1,2 +1,2 @@
 
-css js 压缩打包配置
+css js img 压缩打包配置

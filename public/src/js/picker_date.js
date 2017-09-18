@@ -220,18 +220,23 @@
               var _is = _Lunar.leapMonth(_Y);
 
               var data = [];
-              var __obj = {},j = _i;
+              var __obj = {},j = _i,k;
               for (var i = _i; i < _M; i++) {
                 j = j + 1;
+                if(_is && (j > _is)){
+                    k = j - 1;
+                }else{
+                  k = j;
+                }
                 __obj = {
-                  text: ''+j+'月',
+                  text: ''+k+'月',
                   value: j
                 };
                 data.push(__obj);
                 if(_is && j == _is){
                     j++;
                     __obj = {
-                        text: '闰'+'月',
+                        text: '闰'+ k +'月',
                         value: j
                     };
                     data.push(__obj);
@@ -328,17 +333,17 @@
               var _data2 = isLunarDate ? _D2.fn_M(_selectedVal[0]) : _D.fn_M(_selectedVal[0]);
               // 替换列数据
               picker.refillColumn(1, _data2);
-              picker.scrollColumn(1, 0);
+              // picker.scrollColumn(1, 0);
 
               var _data3 = isLunarDate ? _D2.fn_D(_selectedVal[0],_selectedVal[1]) : _D.fn_D(_selectedVal[0],_selectedVal[1]);
               // 替换列数据
               picker.refillColumn(2, _data3);
-              picker.scrollColumn(2, 0);
+              // picker.scrollColumn(2, 0);
             }else if(selectedVal[1] != _selectedVal[1]){
                 var _data3 = isLunarDate ? _D2.fn_D(_selectedVal[0],_selectedVal[1]) : _D.fn_D(_selectedVal[0],_selectedVal[1]);
                 // 替换列数据
                 picker.refillColumn(2, _data3);
-                picker.scrollColumn(2, 0);
+                // picker.scrollColumn(2, 0);
             }
 
             selectedVal = _selectedVal;
@@ -434,7 +439,6 @@
 
             var _d = {};
             var __;
-
             if(isLunarDate){
               // 农历
               _d.c = {

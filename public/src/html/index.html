@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>星算查询</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no,email=no">
+
+    <link rel="stylesheet" type="text/css" href="./dist/styles/reset.css"/>
+    <!-- 页面样式 -->
+    <link rel="stylesheet" type="text/css" href="./dist/styles/page_index.css"/>
+    <link rel="stylesheet" type="text/css" href="./dist/styles/chosen.min.css"/>
+
+</head>
+<body>
+
+    <!-- 用户信息 tpl -->
+    <script type="text/tpl" id="userInfo_tpl">
+        <div class="tit">
+            <p><span>用户信息</span></p>
+        </div>
+        <div class="con">
+            <p><span>性&nbsp;&nbsp;&nbsp;&nbsp;别</span>:<a>{{sex}}</a></p>
+            <p><span>出生时间</span>:<a>{{time}}</a></p>
+            <p><span>出生地点</span>:<a>{{address}}</a></p>
+            <p><span>居住地点</span>:<a>{{address_now}}</a></p>
+            <a href="javascript:;" class="userInfo_edit">修改</a>
+        </div>
+    </script>
+    <!-- 弹框 select tpl -->
+    <script type="text/tpl" id="city_tpl">
+        <p>
+            <select class="dept_select country">
+            </select>
+            <select class="dept_select province"></select>
+            <select class="dept_select city"></select>
+        </p>
+    </script>
+
+    <!-- 标签 col2(大于5个字) col3(小于等于5个字) on(选中) -->
+    <script type="text/tpl" id="tagBox_tpl">
+        <a href="javascript:;" class="{{cla_01}} {{on}}" data-key="{{key}}">{{name}}</a>
+    </script>
+    <!-- 数据查询 -->
+    <script type="text/tpl" id="inBox_seachLi01_tpl">
+        <div id="seachLi01" class="seachLi clearfix">
+            <div class="selectBox">
+                <p><span>{{name01}}</span><i></i></p>
+                <ul>
+                    {{li}}
+                </ul>
+            </div>
+            <p><span>数据查询</span></p>
+        </div>
+    </script>
+    <script type="text/tpl" id="inBox_seachLi01_li_tpl">
+        <li><a href="javascript:;" data-key="{{key}}">{{name}}</a></li>
+    </script>
+    <!-- 月份选择 -->
+    <script type="text/tpl" id="inBox_seachLi02_tpl">
+        <div id="seachLi02" class="seachLi clearfix">
+            <div class="selectBox">
+                <p><span><input type="text" nane="time" id="_date2" readonly="true" value="" /></span><i></i></p>
+            </div>
+            <p><span>月&nbsp;&nbsp;&nbsp;&nbsp;份</span></p>
+        </div>
+    </script>
+    <!-- 抽牌 -->
+    <script type="text/tpl" id="inBox_seachLi03_tpl">
+        <div id="seachLi03" class="seachLi clearfix">
+            <div class="selectBox">
+                <p><span>&nbsp;</span><i></i></p>
+                <ul>
+                    {{li}}
+                </ul>
+            </div>
+            <p><span>抽&nbsp;&nbsp;&nbsp;&nbsp;牌</span></p>
+        </div>
+    </script>
+    <script type="text/tpl" id="inBox_seachLi03_li_tpl">
+        <li><a href="javascript:;">{{num}}</a></li>
+    </script>
+
+    <!-- 流年运势 每月运势 -->
+    <script type="text/tpl" id="describeBox0101_tpl">
+        <div class="describeBox describeBox0101">
+            <dl class="dl_keyWords">
+                <dt>
+                    <p><span>【{{this_time}}&nbsp;&nbsp;关键词：{{keyWords}}】</span></p>
+                </dt>
+                <dd>
+                    <p>{{keyWords_desc}}</p>
+                </dd>
+            </dl>
+            <dl class="dl_index">
+                <dt>
+                    <p><span>【谨防意外】</span></p>
+                </dt>
+                <dd>
+                    <div class="clearfix">
+                        <p><i>时间: </i><span>{{time}}</span></p>
+                        <p><i>意外指数: </i><span>{{starsHtml}}</span></p>
+                    </div>
+                    <p><i>意外: </i><span>{{accident_desc}}</span></p>
+                    <p><i>建议: </i><span>{{suggest_desc}}</span></p>
+                </dd>
+            </dl>
+        </div>
+    </script>
+    <!-- 流年运势 脱单运势 -->
+    <script type="text/tpl" id="describeBox0102_tpl">
+        <div class="describeBox describeBox0102">
+            <dl class="dl_index">
+                <dt>
+                    <p><strong>{{key}}</strong><span>脱单指数</span><span>{{key_num}}</span></p>
+                    <p class="text"><span>{{keyWords_desc}}</span></p>
+                </dt>
+                <dd>
+                    <p><strong>有利因素: </strong><span>{{good_desc}}</span></p>
+                    <p><strong>不利因素: </strong><span>{{bad_desc}}</span></p>
+                </dd>
+            </dl>
+            <div class="timer">
+                <p>
+                    <a>{{synthesise_desc}}</a>
+                    <span>时间: <i>{{time}}</i></span>
+                </p>
+            </div>
+        </div>
+    </script>
+    <!-- 流年运势 情侣运势 -->
+    <script type="text/tpl" id="describeBox0103_tpl">
+        <div class="describeBox describeBox0102">
+            <dl class="dl_index">
+                <dt>
+                    <p><strong>{{key}}</strong></p>
+                    <p class="text"><span>{{keyWords_desc}}</span></p>
+                </dt>
+                <dd>
+                    <p><strong>有利因素: </strong><span>{{good_desc}}</span></p>
+                    <p><strong>不利因素: </strong><span>{{bad_desc}}</span></p>
+                </dd>
+            </dl>
+            <div class="timer">
+                <p>
+                    <a>{{synthesise_desc}}</a>
+                    <span>时间: <i>{{time}}</i></span>
+                </p>
+            </div>
+        </div>
+    </script>
+    <!-- 流年运势 职场月运 -->
+    <script type="text/tpl" id="describeBox0104_tpl">
+        <div class="describeBox describeBox0102">
+            <dl class="dl_index">
+                <dt>
+                    <p><strong>{{key}}</strong></p>
+                    <p class="text"><span>{{keyWords_desc}}</span></p>
+                </dt>
+                <dd>
+                    <p><strong>有利因素: </strong><span>{{good_desc}}</span></p>
+                    <p><strong>不利因素: </strong><span>{{bad_desc}}</span></p>
+                </dd>
+            </dl>
+            <div class="timer">
+                <p>
+                    <a>{{synthesise_desc}}</a>
+                    <span>时间: <i>{{time}}</i></span>
+                </p>
+            </div>
+        </div>
+    </script>
+    <!-- 流年运势 财富月运 -->
+    <script type="text/tpl" id="describeBox0105_tpl">
+        <div class="describeBox describeBox0105">
+            <dl class="dl_index">
+                <dt>
+                    <p><strong>{{key}}</strong></p>
+                    <p class="text"><span>{{keyWords_desc}}</span></p>
+                </dt>
+                <dd>
+                    <p><span>正财指数</span><span>{{key_num1}}</span></p>
+                    <p><span>偏财指数</span><span>{{key_num2}}</span></p>
+                    <p><span>投资指数</span><span>{{key_num3}}</span></p>
+                    <p><span>剁手指数</span><span>{{key_num4}}</span></p>
+                </dd>
+            </dl>
+            <div class="timer">
+                <p>
+                    <a>{{synthesise_desc}}</a>
+                    <span>时间: <i>{{time}}</i></span>
+                </p>
+            </div>
+        </div>
+    </script>
+    <!-- 流年运势 横财月运 -->
+    <script type="text/tpl" id="describeBox0106_tpl">
+        <div class="describeBox describeBox0106">
+            <div class="timer">
+                <p>
+                    <a>{{synthesise_desc}}</a>
+                    <span>时间: <i>{{time}}</i></span>
+                </p>
+            </div>
+            <dl class="dl_index">
+                <dt>
+                    <p><span>整体横财运势: {{all_grade}}分</span></p>
+                    <p><span>横财运势: {{good_grade}}分</span></p>
+                    <p><span>破财运势: {{bad_grade}}分</span></p>
+                </dt>
+                <dd>
+                    <p><span>{{desc}}</span></p>
+                    <p><span>宜: <i>{{good_desc}}</i></span><span>忌: <i>{{bad_desc}}</i></span></p>
+                </dd>
+            </dl>
+        </div>
+    </script>
+    <!-- 如何脱单 所有标签共用  -->
+    <script type="text/tpl" id="describeBox0201_tpl">
+        <div class="describeBox describeBox0201">
+            <p>{{msg}}</p>
+        </div>
+    </script>
+
+    <!-- 职业占星 职场性格 -->
+    <script type="text/tpl" id="describeBox0601_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span><br/></p>
+            <p><span>职场风险: </span><span>{{risk_desc}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 适合的工作 -->
+    <script type="text/tpl" id="describeBox0602_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>【适合什么样的工作与职位】</span></p>
+            <p><span>{{work_keyWord}}</span><br/></p>
+            <p><span>【适合什么样的行业或领域】</span></p>
+            <p><span>{{industry_keyWord}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 职业天赋 -->
+    <script type="text/tpl" id="describeBox0603_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span></p>
+            <p><br/><span>超凡天赋：</span><br/></p>
+            {{talent}}
+        </div>
+    </script>
+    <script type="text/tpl" id="describeBox0603_li_tpl">
+            <p><span>【{{talent_keyWord}}】</span><span>{{talent_desc}}</span></p>
+    </script>
+    <!-- 职业占星 被小人概率 -->
+    <script type="text/tpl" id="describeBox0604_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>【被小人指数】</span><span>{{index}}</span></p>
+            <p><span>{{msg}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 学习能力 -->
+    <script type="text/tpl" id="describeBox0605_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span></p>
+            <p class="{{is_factors_desc}}"><br/><span>影响学习能力的因素：</span><br/></p>
+            <p class="{{is_factors_desc}}"><span>{{factors_desc}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 抗压能力 -->
+    <script type="text/tpl" id="describeBox0606_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span><br/></p>
+            <p><span>【鼓励语】</span></p>
+            <p><span>{{encourage_desc}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 沟通能力 -->
+    <script type="text/tpl" id="describeBox0607_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 行动力 -->
+    <script type="text/tpl" id="describeBox0608_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span><br/></p>
+            <p><span>{{msg2}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 抓住机遇的能力 -->
+    <script type="text/tpl" id="describeBox0609_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span></p>
+            <p class="{{is_handicap_desc}}"><br/><span>展现才华的障碍：</span><br/></p>
+            <p class="{{is_handicap_desc}}"><span>{{handicap_desc}}</span></p>
+        </div>
+    </script>
+    <!-- 职业占星 成功之道 -->
+    <script type="text/tpl" id="describeBox0610_tpl">
+        <div class="describeBox describeBox0601">
+            <p><span>{{msg}}</span><br/></p>
+            <p><span>加速成功的战斗力：</span></p>
+            <p><span>{{ability_desc}}</span></p>
+        </div>
+    </script>
+
+    <!-- 趣味星盘的星座跟宫位数据 -->
+    <script type="text/tpl" id="describeBox0801_tpl">
+        <div class="describeBox describeBox0801">
+            {{li}}
+        </div>
+    </script>
+    <script type="text/tpl" id="describeBox0801_li_tpl">
+        <dl>
+            <dt>
+                <p>
+                    <span>{{planet}}星座</span>
+                    <span class="constellations">&nbsp;&nbsp;-{{constellations}}座</span>
+                </p>
+            </dt>
+            <dd>
+                <p>{{msg}}</p>
+                <p>{{msg2}}</p>
+            </dd>
+        </dl>
+    </script>
+
+
+    <!-- 创业概率分析 -->
+    <script type="text/tpl" id="describeBox0301_tpl">
+        <div class="describeBox describeBox0301">
+            <p><span>【创业成功的概率<span>{{successProbability}}</span>】</span><br/><span>{{successProbability_text}}</span></p>
+            <p><span>【适合创业的年龄】</span><br/><span>{{successAge}}</span></p>
+            <p><span>【适合创业的工作】</span><br/><span>{{successWork}}</span></p>
+            <p><span>【适合创业的行业】</span><br/><span>{{successIndustry}}</span></p>
+        </div>
+    </script>
+
+    <!-- 塔罗 事件发展预测 -->
+    <script type="text/tpl" id="describeBox05_tpl">
+        <div class="describeBox describeBox0301">
+            <p><span>【复合概率】</span><span>75%</span></p>
+            <p><span>【复合障碍点】</span></p>
+            <p><span>博爱、幼稚、性取向、善变</span></p>
+            <p><span>【复合综合分析】</span></p>
+            <p><span>出现这张配的时候，对方对你其实还是抱有很大的爱意，他还在与你进行一定的沟通，对他来说爱情的处理方式还缺乏技巧，个人不够成熟，自身对于爱情缺乏深层的理解和定义，同时他也并不知道对于你他究竟保留了多少情感，即便如此你们和好的几率依然是很高的。</span></p>
+            <p><span>【复合建议】</span></p>
+            <p><span>妥善把握复合机会，不要过分犹豫，虽然对方对你抱有很好的映象，但是对方对自己的爱情定义并没有成型，容易产生变化，如果想快速和好，可以。。。</span></p>
+        </div>
+    </script>
+
+
+
+</body>
+</html>
