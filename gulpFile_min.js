@@ -63,6 +63,7 @@ var gulp = require('gulp'),//基础库
       gulp.src(basePath+'src/css/*.css')
           // .pipe(conCat('css/index.min.css')) //css合并
           .pipe(plumber({errorHandler:errrHandler}))
+          .pipe(sourcemaps.init())
           .pipe(cssmin({
               advanced: false,//类型：Boolean 默认：true [是否开启高级优化（合并选择器等）]
               compatibility: 'ie7',//保留ie7及以下兼容写法 类型：String 默认：''or'*' [启用兼容模式； 'ie7'：IE7兼容模式，'ie8'：IE8兼容模式，'*'：IE9+兼容模式]
@@ -70,19 +71,22 @@ var gulp = require('gulp'),//基础库
               keepSpecialComments: '*'
               //保留所有特殊前缀 当你用autoprefixer生成的浏览器前缀，如果不加这个参数，有可能将会删除你的部分前缀
           }))
+          .pipe(sourcemaps.write('./'))
           .pipe(gulp.dest(basePath+'dist/css'));
 
   });
   gulp.task('jsmin', function () {
       gulp.src([basePath+'src/js/*.js'])
           // .pipe(conCat('js/index.min.js'))// js 合并
-          .pipe(babel())
           .pipe(plumber({errorHandler:errrHandler}))
+          .pipe(sourcemaps.init())
+          .pipe(babel())
           .pipe(uglify({
               mangle: {except: ['require' ,'exports' ,'module' ,'$']},//类型：Boolean 默认：true 是否修改变量名
               compress: true,//类型：Boolean 默认：true 是否完全压缩
               preserveComments: 'false' //保留所有注释
           }))
+          .pipe(sourcemaps.write('./'))
           .pipe(gulp.dest(basePath+'dist/js'));
   });
   gulp.task('imgmin', function () {

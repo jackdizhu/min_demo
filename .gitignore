@@ -4,4 +4,7 @@ package-lock.json
 !.gitignore
 # 忽略文件夹
 /node_modules/*
-/public/dist/*
+public/dist/js
+public/dist/css
+public/dist/html
+public/src/css

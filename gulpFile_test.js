@@ -23,7 +23,7 @@ var gulp = require('gulp'),
   webpack= require('webpack'),
   webpack_config = require('./webpack.config.js');
 
-  var basePath = 'app/public/';
+  var basePath = './public/';
 
   setInterval(() => {
       console.log('less 编译');
@@ -35,5 +35,22 @@ var gulp = require('gulp'),
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(basePath + 'src/css'))
         .pipe(gulp.dest(basePath + 'dist/css'));
-      // express.run(['./app/bin/www']);
   },3000);
+
+  setInterval(() => {
+      console.log('es6 编译');
+      gulp.src([basePath+'src/js/*.js'])
+        // .pipe(conCat('js/index.min.js'))// js 合并
+        .pipe(plumber({errorHandler:notify.onError('Error:<%=error.message%>')}))
+        .pipe(sourcemaps.init())
+        .pipe(babel())
+        .pipe(uglify({
+            mangle: {except: ['require' ,'exports' ,'module' ,'$']},//类型：Boolean 默认：true 是否修改变量名
+            compress: true,//类型：Boolean 默认：true 是否完全压缩
+            preserveComments: 'false' //保留所有注释
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(basePath+'dist/js'));
+  },3000);
+
+
