@@ -6,6 +6,7 @@
     "env": "node gulpFile_env.js",
     "less": "node gulpFile_less.js",
     "test": "node gulpFile_test.js",
+    "reload": "node gulpFile_reload.js",
     "min": "node gulpFile_min.js"
   },
   "dependencies": {
