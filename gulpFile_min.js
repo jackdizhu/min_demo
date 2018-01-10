@@ -4,6 +4,7 @@ var gulp = require('gulp'),//基础库
     cssmin = require('gulp-minify-css'),//css压缩
     // jshint = require('gulp-jshint'),//js检查
     uglify = require('gulp-uglify'),//js压缩
+    babel = require("gulp-babel"),
     imagemin = require('gulp-imagemin'),//图片压缩
     pngquant = require('imagemin-pngquant'),//图片深入压缩
     imageminOptipng = require('imagemin-optipng'),
@@ -75,6 +76,7 @@ var gulp = require('gulp'),//基础库
   gulp.task('jsmin', function () {
       gulp.src([basePath+'src/js/*.js'])
           // .pipe(conCat('js/index.min.js'))// js 合并
+          .pipe(babel())
           .pipe(plumber({errorHandler:errrHandler}))
           .pipe(uglify({
               mangle: {except: ['require' ,'exports' ,'module' ,'$']},//类型：Boolean 默认：true 是否修改变量名
