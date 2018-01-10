@@ -2,6 +2,8 @@
 var gulp = require('gulp'),
   fs = require('fs'),
   less = require('gulp-less'),
+  postcss = require('gulp-postcss'),
+  autoprefixer = require('autoprefixer'),
   csso = require('gulp-csso'),
   livereload = require('gulp-livereload'),
   uglify = require('gulp-uglify'),
@@ -31,6 +33,15 @@ var gulp = require('gulp'),
         .pipe(plumber({errorHandler:notify.onError('Error:<%=error.message%>')}))
         .pipe(sourcemaps.init())
         .pipe(less())
+        .pipe(postcss([ autoprefixer({ browsers: [
+          // 最新版本添加前缀，市场份额大于0.1%，美国份额>5%，
+          "last 2 version", "> 0.1%", "> 5% in US",
+          // ie6-ie8，
+          "ie >= 8",
+          "iOS >= 8",
+          "Firefox >= 20",
+          "Android > 4.4"
+        ] }) ]))
         .pipe(minifycss())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(basePath + 'src/css'))

@@ -31,6 +31,8 @@
     "gulp-imagemin": "*",
     "gulp-less": "^3.4.0",
     "gulp-livereload": "^3.8.1",
+    "gulp-postcss": "*",
+    "autoprefixer": "*",
     "gulp-minify-css": "*",
     "gulp-nodemon": "^2.2.1",
     "gulp-notify": "^3.1.0",
