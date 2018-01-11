@@ -53,7 +53,7 @@ var gulp = require('gulp'),//基础库
           minifyJS: true,//压缩页面JS
           minifyCSS: true//压缩页面CSS
       };
-      gulp.src([basePath+'src/html/*.html'])
+      return gulp.src([basePath+'src/html/*.html'])
           .pipe(plumber({errorHandler:errrHandler}))
           .pipe(Replace(/_VERSION_/gi, date))
           .pipe(processhtml())
@@ -61,7 +61,7 @@ var gulp = require('gulp'),//基础库
           .pipe(gulp.dest(basePath+'dist/html'));
   });
   gulp.task('cssmin', function(){
-      gulp.src(basePath+'src/css/*.css')
+      return gulp.src(basePath+'src/css/*.css')
           // .pipe(conCat('css/index.min.css')) //css合并
           .pipe(plumber({errorHandler:errrHandler}))
           .pipe(sourcemaps.init())
@@ -77,7 +77,7 @@ var gulp = require('gulp'),//基础库
 
   });
   gulp.task('jsmin', function () {
-      gulp.src([basePath+'src/js/*.js'])
+      return gulp.src([basePath+'src/js/*.js'])
           // .pipe(conCat('js/index.min.js'))// js 合并
           .pipe(plumber({errorHandler:errrHandler}))
           .pipe(sourcemaps.init())
@@ -91,7 +91,7 @@ var gulp = require('gulp'),//基础库
           .pipe(gulp.dest(basePath+'dist/js'));
   });
   gulp.task('imgmin', function () {
-      gulp.src(basePath+'src/img/*.{png,jpg,gif,ico}')
+      return gulp.src(basePath+'src/img/*.{png,jpg,gif,ico}')
           .pipe(plumber({errorHandler:errrHandler}))
           .pipe(cache(imagemin({
               progressive: true, //类型：Boolean 默认：false 无损压缩jpg图片

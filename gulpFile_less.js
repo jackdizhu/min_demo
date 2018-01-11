@@ -30,7 +30,7 @@ var gulp = require('gulp'),
 
   setInterval(() => {
       console.log('less 编译');
-      gulp.src(basePath + 'src/less/*.less')
+      return gulp.src(basePath + 'src/less/*.less')
         .pipe(plumber({errorHandler:notify.onError('Error:<%=error.message%>')}))
         .pipe(sourcemaps.init())
         .pipe(less())

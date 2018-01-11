@@ -1,5 +1,6 @@
 
 var gulp = require('gulp'),//基础库
+    // pump = require('pump'),
     htmlmin = require('gulp-htmlmin'),//html压缩
     cssmin = require('gulp-minify-css'),//css压缩
     // jshint = require('gulp-jshint'),//js检查
@@ -27,13 +28,14 @@ var gulp = require('gulp'),//基础库
   var basePath = 'public/';
 
   gulp.task('clean', () => {
-    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
+    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'])
       .pipe(clean());
   });
 
   // 生成版本号清单  
   gulp.task('rev', () => {  
-    gulp.src([basePath + '**/*.*'])  
+    // gulp.src([basePath + 'src/css/*.*', basePath + 'src/js/*.*', basePath + 'src/img/*.*'])  
+    return gulp.src([basePath + '**/*.*'])  
       .pipe(rev())  
       .pipe(revFormat({  
         prefix: '.', // 在版本号前增加字符  
@@ -52,7 +54,9 @@ var gulp = require('gulp'),//基础库
     function modifyReved(filename) {  
       // filename是：admin.69cef10fff.cache.css的一个文件名  
       // 在这里才发现刚才用gulp-rev-format的作用了吧？就是为了做正则匹配，  
+        console.log(filename)
       if (filename.indexOf('.cache') > -1) {  
+
         // 通过正则和relace得到版本号：69cef10fff  
         const _version = filename.match(/\.[\w]*\.cache/)[0].replace(/(\.|cache)*/g,"");  
         // 把版本号和gulp-rev-format生成的字符去掉，剩下的就是原文件名：admin.css  
@@ -64,15 +68,15 @@ var gulp = require('gulp'),//基础库
       }  
       return filename;  
     }  
-    gulp.src([basePath + 'tpl/**.html'])   
+    return gulp.src([basePath + 'tpl/*.html'])   
       // 删除原来的版本   
       .pipe(replace(/(\.[a-z]+)\?(v=)?[^\'\"\&]*/g,"$1"))   
       .pipe(revReplace({  
-      manifest: manifest,  
-      modifyUnreved: modifyUnreved,  
-      modifyReved: modifyReved  
-    }))    
-    .pipe(gulp.dest(basePath + 'html/'));  
+        manifest: manifest,  
+        modifyUnreved: modifyUnreved,  
+        modifyReved: modifyReved  
+      }))    
+      .pipe(gulp.dest(basePath + 'html/'));  
   }); 
 
   gulp.task('start',['rev', 'addVersion']);

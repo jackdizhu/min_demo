@@ -53,7 +53,7 @@ var gulp = require('gulp'),
   // less 编译
   gulp.task('lessTest',(event) => {
       console.log('gulp.task: lessTest');
-      gulp.src(basePath + 'src/less/*.less')
+      return gulp.src(basePath + 'src/less/*.less')
         .pipe(plumber({errorHandler:notify.onError('Error:<%=error.message%>')}))
         .pipe(less())
         .pipe(gulp.dest(basePath + 'dist/css'));
@@ -82,7 +82,7 @@ var gulp = require('gulp'),
 
   // 生成js文件
   gulp.task('buildjs',() => {
-    gulp.src(basePath + 'src/index.js')
+    return gulp.src(basePath + 'src/index.js')
       .pipe(gulp_webpack(webpack_config,webpack))
       .pipe(gulp.dest(basePath + 'dist/'))
       .pipe(devHtml({
