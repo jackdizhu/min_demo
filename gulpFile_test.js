@@ -7,6 +7,7 @@ var gulp = require('gulp'),
   csso = require('gulp-csso'),
   livereload = require('gulp-livereload'),
   uglify = require('gulp-uglify'),
+  base64 = require('gulp-base64'),
   babel = require("gulp-babel"),
   minifycss = require('gulp-minify-css'),
   rev = require('gulp-rev'),
@@ -33,6 +34,12 @@ var gulp = require('gulp'),
         .pipe(plumber({errorHandler:notify.onError('Error:<%=error.message%>')}))
         .pipe(sourcemaps.init())
         .pipe(less())
+        .pipe(base64({
+            baseDir:        basePath + 'src/img',
+            extensions:     ['svg', 'png', 'jpg', 'gif'],
+            maxImageSize:   20*1024, // bytes 
+            debug:          true
+        }))
         .pipe(postcss([ autoprefixer({ browsers: [
           // 最新版本添加前缀，市场份额大于0.1%，美国份额>5%，
           "last 2 version", "> 0.1%", "> 5% in US",

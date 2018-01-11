@@ -52,5 +52,8 @@
     "vue-loader": "*",
     "vue-template-compiler": "*",
     "webpack": "^3.0.0"
+  },
+  "devDependencies": {
+    "gulp-base64": "^0.1.2"
   }
 }
