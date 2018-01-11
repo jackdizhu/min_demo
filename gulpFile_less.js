@@ -37,7 +37,7 @@ var gulp = require('gulp'),
         .pipe(base64({
             baseDir:        basePath + 'src/img',
             extensions:     ['svg', 'png', 'jpg', 'gif'],
-            maxImageSize:   20*1024, // bytes 
+            maxImageSize:   5*1024, // bytes
             debug:          true
         }))
         .pipe(postcss([ autoprefixer({ browsers: [
