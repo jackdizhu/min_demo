@@ -25,6 +25,10 @@ var gulp = require('gulp'),
   devHtml = require('gulp-devHtml');
 
   var basePath = 'public/';
+  gulp.task('clean', () => {
+    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
+      .pipe(clean());
+  });
 
   // less 编译
   gulp.task('less',(event) => {
@@ -45,10 +49,6 @@ var gulp = require('gulp'),
         .pipe(gulp.dest(basePath + 'src/css/page'))
         // .pipe(gulp.dest(basePath + 'dist/css'));
 
-  });
-  gulp.task('lessClean',(event) => {
-      gulp.src(basePath + 'dist/css')
-        .pipe(clean());
   });
   // less 编译
   gulp.task('lessTest',(event) => {

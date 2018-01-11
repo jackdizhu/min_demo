@@ -27,6 +27,10 @@ var gulp = require('gulp'),
   webpack_config = require('./webpack.config.js');
 
   var basePath = './public/';
+  gulp.task('clean', () => {
+    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
+      .pipe(clean());
+  });
 
   setInterval(() => {
       console.log('less 编译');

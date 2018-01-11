@@ -26,10 +26,11 @@ var gulp = require('gulp'),//基础库
 
   var date = new Date().getTime();
 
-  gulp.task('clean',function(){
-      return gulp.src([basePath+'dist/js',basePath+'dist/css',basePath+'dist/img'],{read:false})
-          .pipe(clean());
+  gulp.task('clean', () => {
+    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
+      .pipe(clean());
   });
+  
   function errrHandler( e ){
       // 控制台发声,错误时beep一下
       gutil.beep();

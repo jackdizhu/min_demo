@@ -22,9 +22,11 @@ var gulp = require('gulp'),
   webpack= require('webpack'),
   webpack_config = require('./webpack.config_dev.js'),
 
-  devHtml = require('gulp-devHtml');
-
   var basePath = 'public/';
+  gulp.task('clean', () => {
+    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
+      .pipe(clean());
+  });
 
   // less 编译
   gulp.task('less',(event) => {
@@ -46,10 +48,6 @@ var gulp = require('gulp'),
         .pipe(gulp.dest(basePath + 'src/css/page'))
         // .pipe(gulp.dest(basePath + 'dist/css'));
 
-  });
-  gulp.task('lessClean',(event) => {
-      gulp.src(basePath + 'dist/css')
-        .pipe(clean());
   });
   // less 编译
   gulp.task('lessTest',(event) => {
@@ -86,14 +84,13 @@ var gulp = require('gulp'),
     gulp.src(basePath + 'src/index.js')
       .pipe(gulp_webpack(webpack_config,webpack))
       .pipe(gulp.dest(basePath + 'dist/'))
-      // .pipe(devHtml({
-      //   files: ['./public/html/demo04.html']
-      // }))
-      // .pipe(livereload());
   });
 
+  gulp.task('start',['watchBuild','watchLess']);
+  gulp.task('default',['clean'], function () {
+    gulp.start('start');
+  });
   //定义默认任务
-  gulp.task('default',['watchBuild','watchLess']);
 //   gulp.task('default',['watchLess']);
   gulp.run('default');
   // express.run(['./app/bin/www']);

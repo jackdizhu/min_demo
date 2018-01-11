@@ -3,6 +3,10 @@ var gulp = require('gulp'),//基础库
 
   var rootPath = 'public';
   var basePath = rootPath + '/';
+  gulp.task('clean', () => {
+    return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
+      .pipe(clean());
+  });
 
   // 启动 dev server 
   gulp.task('connectDev', function () {
@@ -11,6 +15,9 @@ var gulp = require('gulp'),//基础库
       port: 9000,
       livereload: true
     });
+  });// 关闭 server 
+  gulp.task('serverClose', function () {
+    connect.serverClose();
   });
   gulp.task('html', function () {
     gulp.src(basePath + '*.html')
@@ -23,4 +30,8 @@ var gulp = require('gulp'),//基础库
   });
 
   gulp.task('default',['connectDev', 'watch']);
+
   gulp.run('default');
+  // setTimeout(() => {
+  //   gulp.run('serverClose');
+  // },10000);
