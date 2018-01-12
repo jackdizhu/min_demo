@@ -9,9 +9,12 @@
     "rev": "node gulpFile_rev.js",
     "revWeight": "node gulpFile_revWeight.js",
     "reload": "node gulpFile_reload.js",
+    "order": "node gulpFile_order.js",
     "min": "node gulpFile_min.js"
   },
   "dependencies": {
+    "thunks": "^4.9.0",
+    "standard": "^10.0.3",
     "autoprefixer": "*",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
