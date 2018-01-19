@@ -1,5 +1,7 @@
 
 var gulp = require('gulp'),//基础库
+    browserify = require('browserify'), // 浏览器端代码模块化工具
+    babelify = require('babelify'), 
     htmlmin = require('gulp-htmlmin'),//html压缩
     cssmin = require('gulp-minify-css'),//css压缩
     // jshint = require('gulp-jshint'),//js检查
@@ -11,6 +13,8 @@ var gulp = require('gulp'),//基础库
     imageminSvgo = require('imagemin-svgo'),
     imageminGifsicle = require('imagemin-gifsicle'),
     imageminJpegtran = require('imagemin-jpegtran'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
     sourcemaps = require('gulp-sourcemaps'),
     domSrc = require('gulp-dom-src'),
     cheerio = require('gulp-cheerio'),
@@ -91,6 +95,20 @@ var gulp = require('gulp'),//基础库
           .pipe(sourcemaps.write('./'))
           .pipe(gulp.dest(basePath+'dist/js'));
   });
+  // js require 打包
+  gulp.task('jsmin2',()=> {
+      browserify({
+          entries: [basePath+'src/js/es6.js'],
+          debug: true, // 告知Browserify在运行同时生成内联sourcemap用于调试
+      })
+      .transform("babelify", {presets: ["es2015"]})
+      .bundle()
+      .pipe(source('build.js'))
+      .pipe(buffer()) // 缓存文件内容
+      .pipe(sourcemaps.init({loadMaps: true})) // 从 browserify 文件载入 map
+      .pipe(sourcemaps.write('.')) // 写入 .map 文件
+      .pipe(gulp.dest(basePath+'dist/js'));
+  })
   gulp.task('imgmin', function () {
       return gulp.src(basePath+'src/img/*.{png,jpg,gif,ico}')
           .pipe(plumber({errorHandler:errrHandler}))
@@ -103,7 +121,7 @@ var gulp = require('gulp'),//基础库
           .pipe(gulp.dest(basePath+'dist/img'));
   });
   gulp.task('default',['clean'],function(){
-      gulp.start('cssmin','htmlmin','jsmin','imgmin');
+      gulp.start('cssmin','htmlmin','jsmin2','imgmin');
   });
 
   gulp.run('default');
