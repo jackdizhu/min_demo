@@ -11,6 +11,7 @@ var gulp = require('gulp'),//基础库
     imageminSvgo = require('imagemin-svgo'),
     imageminGifsicle = require('imagemin-gifsicle'),
     imageminJpegtran = require('imagemin-jpegtran'),
+    sourcemaps = require('gulp-sourcemaps'),
     domSrc = require('gulp-dom-src'),
     cheerio = require('gulp-cheerio'),
     processhtml = require('gulp-processhtml'),
@@ -30,7 +31,7 @@ var gulp = require('gulp'),//基础库
     return gulp.src([basePath + 'dist/**/*', basePath + 'rev/**/*', basePath + 'html/**/*'], {read:false})
       .pipe(clean());
   });
-  
+
   function errrHandler( e ){
       // 控制台发声,错误时beep一下
       gutil.beep();
