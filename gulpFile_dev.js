@@ -20,7 +20,7 @@ var gulp = require('gulp'),
 
   gulp_webpack = require('gulp-webpack'),
   webpack= require('webpack'),
-  webpack_config = require('./webpack.config_dev.js'),
+  webpack_config = require('./webpack.config_dev.js');
 
   var basePath = 'public/';
   gulp.task('clean', () => {
